@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstraBot - Comandos</title>
+    <style>
+        body {
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(90deg, #16213e, #0f3460);
+            width: 100%;
+            border-bottom: 2px solid #7209b7;
+        }
+        .header h1 {
+            color: #ff00ff;
+            margin: 0;
+            font-size: 2.5em;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+        .header h3 {
+            color: #b5179e;
+            margin: 5px 0;
+        }
+        .premium-features {
+            text-align: center;
+            padding: 20px;
+            background: #2c2f33;
+            width: 80%;
+            border: 2px solid #7209b7;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 0 15px rgba(114, 9, 183, 0.5);
+        }
+        .premium-features h2 {
+            color: #ff00ff;
+            margin: 0;
+            font-size: 2em;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+        .premium-features p {
+            color: #b5179e;
+        }
+        .feature-box {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        .feature-item {
+            background: #23272a;
+            padding: 10px;
+            border-radius: 5px;
+            width: 200px;
+        }
+        .feature-item span {
+            color: #ffffff;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 15px 0;
+        }
+        .button {
+            padding: 10px 20px;
+            background: #ff00ff;
+            color: #1a1a2e;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .button:hover {
+            background: #b5179e;
+        }
+        .status-box {
+            background: rgba(23, 23, 37, 0.9);
+            border: 1px solid #7209b7;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            width: 80%;
+            box-shadow: 0 0 15px rgba(114, 9, 183, 0.5);
+        }
+        #search {
+            width: 80%;
+            padding: 10px;
+            margin: 15px 0;
+            border: 1px solid #7209b7;
+            border-radius: 5px;
+            background: #2a2a3d;
+            color: #e0e0e0;
+        }
+        .accordion {
+            width: 80%;
+            margin: 20px 0;
+        }
+        .accordion-item {
+            background: rgba(23, 23, 37, 0.9);
+            border: 1px solid #7209b7;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .accordion-header {
+            color: #ff00ff;
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #7209b7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .accordion-header:hover {
+            background: #2a2a3d;
+        }
+        .accordion-content {
+            padding: 0 10px 10px;
+            display: none;
+        }
+        .accordion-content.active {
+            display: block;
+        }
+        .command-item {
+            padding: 5px 0;
+            color: #b5179e;
+        }
+        .site-footer {
+            text-align: center;
+            padding: 10px;
+            background: #16213e;
+            width: 100%;
+            border-top: 2px solid #7209b7;
+            margin-top: auto;
+        }
+        .site-footer a {
+            color: #ff00ff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #2f3136;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            width: 300px;
+            border: 2px solid #7209b7;
+            box-shadow: 0 0 10px rgba(114, 9, 183, 0.5);
+        }
+        .modal-content h3 {
+            color: #ffffff;
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+        }
+        .modal-content p {
+            color: #ffffff;
+            margin: 10px 0;
+        }
+        .modal-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #ff00ff;
+            color: #1a1a2e;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .modal-link:hover {
+            background: #b5179e;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>ASTRA BOT</h1>
+        <h3>Comandos Disponibles</h3>
+        <p>Prefijo: <strong>Z!</strong></p>
+    </div>
+
+    <div class="premium-features">
+        <h2>Premium Features</h2>
+        <p>Packed with cutting-edge technology for the ultimate bot experience</p>
+        <div class="feature-box">
+            <div class="feature-item"><span>⚡ Lightning Fast Execution</span></div>
+            <div class="feature-item"><span>🛡️ Advanced Protection</span></div>
+            <div class="feature-item"><span>🎮 Full Lua 5.4 Support</span></div>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <a href="https://discord.com/oauth2/authorize?client_id=1361094327509585970&permissions=8&integration_type=0&scope=bot+applications.commands" class="button">Invitar Bot</a>
+        <button class="button" onclick="showSupportModal()">Soporte</button>
+    </div>
+
+    <div class="modal" id="supportModal">
+        <div class="modal-content">
+            <span class="close" onclick="hideSupportModal()">×</span>
+            <h3>Syrath Profile</h3>
+            <p>Manda un MD al creador o únete al servidor de soporte:</p>
+            <a href="https://discord.gg/GZUjtAjD" class="modal-link" target="_blank">Unirse al Servidor</a>
+        </div>
+    </div>
+
+    <div class="status-box">
+        <h3>⚙️ Estadísticas</h3>
+        <ul>
+            <li>[✓] Total de comandos: 120+</li>
+            <li>[✓] Categorías: 8</li>
+            <li>[✓] Prefijo: Z!</li>
+        </ul>
+    </div>
+
+    <input type="text" id="search" placeholder="🔍 Buscar comandos..." class="search-bar">
+
+    <div class="accordion">
+        <!-- Configuración -->
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion('config')">⚙️ Configuración</div>
+            <div id="config" class="accordion-content">
+                <ul class="command-list">
+                    <li class="command-item"><strong>Z!addcolores</strong> - Añade roles de colores</li>
+                    <li class="command-item"><strong>Z!approve</strong> - Aprueba una sugerencia</li>
+                    <li class="command-item"><strong>Z!config</strong> - Configura el bot</li>
+                    <li class="command-item"><strong>Z!deny</strong> - Rechaza una sugerencia</li>
+                    <li class="command-item"><strong>Z!disable</strong> - Desactiva un comando</li>
+                    <li class="command-item"><strong>Z!enable</strong> - Activa un comando</li>
+                    <li class="command-item"><strong>Z!ignorechannel</strong> - Ignora un canal</li>
+                    <li class="command-item"><strong>Z!maybe</strong> - Marca una sugerencia como quizás</li>
+                    <li class="command-item"><strong>Z!setautorole</strong> - Establece el auto-rol</li>
+                    <li class="command-item"><strong>Z!setconfessions</strong> - Configura confesiones</li>
+                    <li class="command-item"><strong>Z!setleave</strong> - Mensaje de despedida</li>
+                    <li class="command-item"><strong>Z!setleavechannel</strong> - Canal de despedidas</li>
+                    <li class="command-item"><strong>Z!setlogs</strong> - Canal de logs</li>
+                    <li class="command-item"><strong>Z!setmodrole</strong> - Rol de moderador</li>
+                    <li class="command-item"><strong>Z!setmuterole</strong> - Rol de muteado</li>
+                    <li class="command-item"><strong>Z!setprefix</strong> - Cambia el prefijo</li>
+                    <li class="command-item"><strong>Z!setreports</strong> - Canal de reportes</li>
+                    <li class="command-item"><strong>Z!setsuggestions</strong> - Canal de sugerencias</li>
+                    <li class="command-item"><strong>Z!setwarns</strong> - Configura advertencias</li>
+                    <li class="command-item"><strong>Z!setwelcome</strong> - Mensaje de bienvenida</li>
+                    <li class="command-item"><strong>Z!setwelcomechannel</strong> - Canal de bienvenidas</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diversión -->
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion('diversion')">🎉 Diversión</div>
+            <div id="diversion" class="accordion-content">
+                <ul class="command-list">
+                    <li class="command-item"><strong>Z!8ball</strong> - Pregunta a la bola mágica</li>
+                    <li class="command-item"><strong>Z!achievement</strong> - Crea un logro de Minecraft</li>
+                    <li class="command-item"><strong>Z!ascii</strong> - Convierte texto a ASCII</li>
+                    <li class="command-item"><strong>Z!bigtext</strong> - Texto grande</li>
+                    <li class="command-item"><strong>Z!cat</strong> - Fotos aleatorias de gatos</li>
+                    <li class="command-item"><strong>Z!choose</strong> - Elige entre opciones</li>
+                    <li class="command-item"><strong>Z!coinflip</strong> - Lanza una moneda</li>
+                    <li class="command-item"><strong>Z!confession</strong> - Haz una confesión anónima</li>
+                    <li class="command-item"><strong>Z!horoscope</strong> - Horóscopo diario</li>
+                    <li class="command-item"><strong>Z!husbando</strong> - Genera un husbando aleatorio</li>
+                    <li class="command-item"><strong>Z!license</strong> - Crea una licencia</li>
+                    <li class="command-item"><strong>Z!love</strong> - Calcula el amor entre dos usuarios</li>
+                    <li class="command-item"><strong>Z!machievement</strong> - Logro de Minecraft personalizado</li>
+                    <li class="command-item"><strong>Z!meme</strong> - Memes aleatorios</li>
+                    <li class="command-item"><strong>Z!nekogirl</strong> - Imágenes de neko girls</li>
+                    <li class="command-item"><strong>Z!note</strong> - Crea una nota</li>
+                    <li class="command-item"><strong>Z!ranime</strong> - Anime aleatorio</li>
+                    <li class="command-item"><strong>Z!rate</strong> - Califica algo</li>
+                    <li class="command-item"><strong>Z!reverse</strong> - Invierte el texto</li>
+                    <li class="command-item"><strong>Z!roll</strong> - Lanza un dado</li>
+                    <li class="command-item"><strong>Z!rps</strong> - Piedra, papel o tijeras</li>
+                    <li class="command-item"><strong>Z!trash</strong> - Basura alguien</li>
+                    <li class="command-item"><strong>Z!triggered</strong> - Crea un meme "triggered"</li>
+                    <li class="command-item"><strong>Z!trump</strong> - Cita aleatoria de Trump</li>
+                    <li class="command-item"><strong>Z!waifu</strong> - Genera una waifu aleatoria</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Información -->
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion('informacion')">ℹ️ Información</div>
+            <div id="informacion" class="accordion-content">
+                <ul class="command-list">
+                    <li class="command-item"><strong>Z!about</strong> - Información sobre el bot</li>
+                    <li class="command-item"><strong>Z!botinfo</strong> - Estadísticas del bot</li>
+                    <li class="command-item"><strong>Z!bugreport</strong> - Reporta un error</li>
+                    <li class="command-item"><strong>Z!donate</strong> - Información de donaciones</li>
+                    <li class="command-item"><strong>Z!help</strong> - Muestra los comandos</li>
+                    <li class="command-item"><strong>Z!invite</strong> - Enlace de invitación</li>
+                    <li class="command-item"><strong>Z!nodmhelp</strong> - Desactiva ayuda por DM</li>
+                    <li class="command-item"><strong>Z!release</strong> - Notas de la versión</li>
+                    <li class="command-item"><strong>Z!support</strong> - Servidor de soporte</li>
+                    <li class="command-item"><strong>Z!vote</strong> - Vota por el bot</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Interacción -->
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion('interaccion')">🤝 Interacción</div>
+            <div id="interaccion" class="accordion-content">
+                <ul class="command-list">
+                    <li class="command-item"><strong>Z!baka</strong> - Llama baka a alguien</li>
+                    <li class="command-item"><strong>Z!bite</strong> - Muerde a alguien</li>
+                    <li class="command-item"><strong>Z!bye</strong> - Despídete</li>
+                    <li class="command-item"><strong>Z!cheeks</strong> - Toca mejillas</li>
+                    <li class="command-item"><strong>Z!claps</strong> - Aplaude</li>
+                    <li class="command-item"><strong>Z!cook</strong> - Cocina algo</li>
+                    <li class="command-item"><strong>Z!cookie</strong> - Dale una galleta</li>
+                    <li class="command-item"><strong>Z!cuddle</strong> - Abraza a alguien</li>
+                    <li class="command-item"><strong>Z!dance</strong> - Baila</li>
+                    <li class="command-item"><strong>Z!feed</strong> - Alimenta a alguien</li>
+                    <li class="command-item"><strong>Z!handholding</strong> - Toma de manos</li>
+                    <li class="command-item"><strong>Z!hi</strong> - Saluda</li>
+                    <li class="command-item"><strong>Z!highfive</strong> - Choca los cinco</li>
+                    <li class="command-item"><strong>Z!hug</strong> - Abraza a alguien</li>
+                    <li class="command-item"><strong>Z!kickbutts</strong> - Patea traseros</li>
+                    <li class="command-item"><strong>Z!kill</strong> - Mata a alguien</li>
+                    <li class="command-item"><strong>Z!kiss</strong> - Besa a alguien</li>
+                    <li class="command-item"><strong>Z!laugh</strong> - Ríe</li>
+                    <li class="command-item"><strong>Z!lick</strong> - Lame a alguien</li>
+                    <li class="command-item"><strong>Z!pat</strong> - Acaricia a alguien</li>
+                    <li class="command-item"><strong>Z!poke</strong> - Empuja a alguien</li>
+                    <li class="command-item"><strong>Z!punch</strong> - Golpea a alguien</li>
+                    <li class="command-item"><strong>Z!run</strong> - Corre</li>
+                    <li class="command-item"><strong>Z!scared</strong> - Asustado</li>
+                    <li class="command-item"><strong>Z!slap</strong> - Abofetea a alguien</li>
+                    <li class="command-item"><strong>Z!sleep</strong> - Duerme</li>
+                    <li class="command-item"><strong>Z!splash</strong> - Salpica</li>
+                    <li class="command-item"><strong>Z!spray</strong> - Rocía</li>
+                    <li class="command-item"><strong>Z!tickle</strong> - Haz cosquillas</li>
+                    <li class="command-item"><strong>Z!tsundere</strong> - Comportamiento tsundere</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Moderación -->
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion('moderacion')">🛡️ Moderación</div>
+            <div id="moderacion" class="accordion-content">
+                <ul class="command-list">
+                    <li class="command-item"><strong>Z!addrole</strong> - Añade un rol</li>
+                    <li class="command-item"><strong>Z!ban</strong> - Banea a un usuario</li>
+                    <li class="command-item"><strong>Z!cleanwarns</strong> - Limpia advertencias</li>
+                    <li class="command-item"><strong>Z!createrole</strong> - Crea un rol</li>
+                    <li class="command-item"><strong>Z!deleterole</strong> - Elimina un rol</li>
+                    <li class="command-item"><strong>Z!editembed</strong> - Edita un embed</li>
+                    <li class="command-item"><strong>Z!editsay</strong> - Edita un mensaje del bot</li>
+                    <li class="command-item"><strong>Z!hackban</strong> - Banea por ID</li>
+                    <li class="command-item"><strong>Z!kick</strong> - Expulsa a un usuario</li>
+                    <li class="command-item"><strong>Z!lock</strong> - Bloquea un canal</li>
+                    <li class="command-item"><strong>Z!mute</strong> - Silencia a un usuario</li>
+                    <li class="command-item"><strong>Z!nickname</strong> - Cambia apodos</li>
+                    <li class="command-item"><strong>Z!purge</strong> - Elimina mensajes</li>
+                    <li class="command-item"><strong>Z!removerole</strong> - Quita un rol</li>
+                    <li class="command-item"><strong>Z!sdm</strong> - Envía DM como el bot</li>
+                    <li class="command-item"><strong>Z!softban</strong> - Banea y desbanea</li>
+                    <li class="command-item"><strong>Z!tempmute</strong> - Silencio temporal</li>
+                    <li class="command-item"><strong>Z!unban</strong> - Desbanea a un usuario</li>
+                    <li class="command-item"><strong>Z!unlock</strong> - Desbloquea un canal</li>
+                    <li class="command-item"><strong>Z!unmute</strong> - Quita silencio</li>
+                    <li class="command-item"><strong>Z!unwarn</strong> - Elimina advertencia</li>
+                    <li class="command-item"><strong>Z!warn</strong> - Advierte a un usuario</li>
+                    <li class="command-item"><strong>Z!warnings</strong> - Muestra advertencias</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- NSFW -->
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion('nsfw')">🔞 NSFW</div>
+            <div id="nsfw" class="accordion-content">
+                <p class="nsfw-warning">* Los comandos de esta categoría solo están disponibles en canales marcados como NSFW *</p>
+            </div>
+        </div>
+
+        <!-- Reacción -->
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion('reaccion')">😄 Reacción</div>
+            <div id="reaccion" class="accordion-content">
+                <ul class="command-list">
+                    <li class="command-item"><strong>Z!angry</strong> - Muestra enojo</li>
+                    <li class="command-item"><strong>Z!banghead</strong> - Golpea tu cabeza</li>
+                    <li class="command-item"><strong>Z!blush</strong> - Sonrojo</li>
+                    <li class="command-item"><strong>Z!boom</strong> - Explosión</li>
+                    <li class="command-item"><strong>Z!bored</strong> - Aburrimiento</li>
+                    <li class="command-item"><strong>Z!confused</strong> - Confusión</li>
+                    <li class="command-item"><strong>Z!cry</strong> - Llora</li>
+                    <li class="command-item"><strong>Z!dab</strong> - Haz un dab</li>
+                    <li class="command-item"><strong>Z!die</strong> - Muere</li>
+                    <li class="command-item"><strong>Z!discouraged</strong> - Desánimo</li>
+                    <li class="command-item"><strong>Z!disgust</strong> - Disgusto</li>
+                    <li class="command-item"><strong>Z!facepalm</strong> - Facepalm</li>
+                    <li class="command-item"><strong>Z!fbi</strong> - Llama al FBI</li>
+                    <li class="command-item"><strong>Z!game</strong> - Juega</li>
+                    <li class="command-item"><strong>Z!happy</strong> - Felicidad</li>
+                    <li class="command-item"><strong>Z!jpose</strong> - Pose de jojo</li>
+                    <li class="command-item"><strong>Z!lewd</strong> - Lewd</li>
+                    <li class="command-item"><strong>Z!like</strong> - Me gusta</li>
+                    <li class="command-item"><strong>Z!nope</strong> - No</li>
+                    <li class="command-item"><strong>Z!pout</strong> - Hace pucheros</li>
+                    <li class="command-item"><strong>Z!shrug</strong> - Encoge hombros</li>
+                    <li class="command-item"><strong>Z!sing</strong> - Canta</li>
+                    <li class="command-item"><strong>Z!sip</strong> - Sorbe</li>
+                    <li class="command-item"><strong>Z!smug</strong> - Sonrisa smug</li>
+                    <li class="command-item"><strong>Z!think</strong> - Piensa</li>
+                    <li class="command-item"><strong>Z!vomit</strong> - Vomita</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Utilidades -->
+        <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion('utilidades')">🛠️ Utilidades</div>
+            <div id="utilidades" class="accordion-content">
+                <ul class="command-list">
+                    <li class="command-item"><strong>Z!avatar</strong> - Muestra avatares</li>
+                    <li class="command-item"><strong>Z!botinvite</strong> - Invitación del bot</li>
+                    <li class="command-item"><strong>Z!calc</strong> - Calculadora</li>
+                    <li class="command-item"><strong>Z!channelinfo</strong> - Información de canal</li>
+                    <li class="command-item"><strong>Z!esay</strong> - Envía un embed</li>
+                    <li class="command-item"><strong>Z!hexcolor</strong> - Muestra colores HEX</li>
+                    <li class="command-item"><strong>Z!jumbo</strong> - Agranda emojis</li>
+                    <li class="command-item"><strong>Z!morse</strong> - Traductor morse</li>
+                    <li class="command-item"><strong>Z!question</strong> - Pregunta algo</li>
+                    <li class="command-item"><strong>Z!randomuser</strong> - Usuario aleatorio</li>
+                    <li class="command-item"><strong>Z!reportuser</strong> - Reporta un usuario</li>
+                    <li class="command-item"><strong>Z!roleinfo</strong> - Información de rol</li>
+                    <li class="command-item"><strong>Z!say</strong> - Repite un mensaje</li>
+                    <li class="command-item"><strong>Z!servericon</strong> - Icono del servidor</li>
+                    <li class="command-item"><strong>Z!serverinfo</strong> - Información del servidor</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>© 2025 AstraBot | Todos los derechos reservados</p>
+            <p>Prefijo: <strong>Z!</strong> | <a href="/invite">Invitar bot</a> | <a href="#" onclick="showSupportModal()">Soporte</a></p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('search').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            document.querySelectorAll('.command-item').forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+            } else {
+                document.querySelectorAll('.accordion-content').forEach(item => item.classList.remove('active'));
+                content.classList.add('active');
+            }
+        }
+
+        function showSupportModal() {
+            document.getElementById('supportModal').style.display = 'flex';
+        }
+
+        function hideSupportModal() {
+            document.getElementById('supportModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
