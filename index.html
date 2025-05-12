@@ -6,7 +6,8 @@
     <title>AstraBot - Comandos</title>
     <style>
         body {
-            background-color: #1a1a2e;
+            background: linear-gradient(45deg, #1a1a2e, #0f3460, #16213e, #2a2a3d);
+            background-size: 400%;
             color: #e0e0e0;
             font-family: Arial, sans-serif;
             margin: 0;
@@ -14,9 +15,31 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            overflow: hidden; /* Evitar scroll durante la intro */
+            min-height: 100vh;
+            overflow-x: hidden;
+            animation: gradientBackground 15s ease infinite;
+            position: relative;
+            -webkit-overflow-scrolling: touch; /* Mejora el scroll en iOS */
         }
-        /* Introducción */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ff00ff;
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: floatParticle 10s infinite linear;
+            will-change: transform, opacity;
+        }
         .intro {
             position: fixed;
             top: 0;
@@ -32,16 +55,16 @@
         }
         .intro h1 {
             color: #ff00ff;
-            font-size: 3em;
+            font-size: clamp(2em, 6vw, 3em);
             text-shadow: 0 0 15px #ff00ff;
-            animation: pulseText 1.5s infinite;
+            animation: pulseText 1.5s infinite, rotateText 3s ease-in-out;
         }
-        /* Cartel de comandos faltantes */
         .coming-soon {
             text-align: center;
             padding: 10px;
             background: #2c2f33;
-            width: 80%;
+            width: 90%;
+            max-width: 600px;
             border: 2px solid #7209b7;
             border-radius: 10px;
             margin: 15px 0;
@@ -51,7 +74,7 @@
         .coming-soon p {
             color: #ff00ff;
             margin: 0;
-            font-size: 1.2em;
+            font-size: clamp(1em, 3vw, 1.2em);
         }
         .header {
             text-align: center;
@@ -65,20 +88,22 @@
         .header h1 {
             color: #ff00ff;
             margin: 0;
-            font-size: 2.5em;
+            font-size: clamp(1.8em, 5vw, 2.5em);
             text-shadow: 0 0 10px #ff00ff;
             animation: glow 2s infinite alternate;
         }
         .header h3 {
             color: #b5179e;
             margin: 5px 0;
+            font-size: clamp(1.2em, 3vw, 1.5em);
             animation: fadeIn 2s ease-in-out;
         }
         .premium-features {
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             background: #2c2f33;
-            width: 80%;
+            width: 90%;
+            max-width: 600px;
             border: 2px solid #7209b7;
             border-radius: 10px;
             margin: 15px 0;
@@ -89,33 +114,37 @@
         .premium-features h2 {
             color: #ff00ff;
             margin: 0;
-            font-size: 2em;
+            font-size: clamp(1.5em, 4vw, 2em);
             text-shadow: 0 0 10px #ff00ff;
             animation: glow 2s infinite alternate;
         }
         .premium-features p {
             color: #b5179e;
+            font-size: clamp(0.9em, 2.5vw, 1em);
         }
         .feature-box {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             margin-top: 10px;
         }
         .feature-item {
             background: #23272a;
             padding: 10px;
             border-radius: 5px;
-            width: 200px;
+            width: clamp(150px, 30vw, 200px);
             animation: scaleIn 0.8s ease-in-out;
         }
         .feature-item span {
             color: #ffffff;
+            font-size: clamp(0.8em, 2.5vw, 1em);
         }
         .buttons {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             margin: 15px 0;
             animation: fadeIn 1s ease-in-out 3s forwards;
             opacity: 0;
@@ -129,12 +158,15 @@
             cursor: pointer;
             text-decoration: none;
             font-weight: bold;
-            transition: transform 0.3s ease, background 0.3s ease;
+            font-size: clamp(0.9em, 2.5vw, 1em);
+            transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
             animation: pulseButton 2s infinite;
+            touch-action: manipulation; /* Mejora la interacción táctil */
         }
         .button:hover {
             background: #b5179e;
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(5deg);
+            color: #ffffff;
         }
         .status-box {
             background: rgba(23, 23, 37, 0.9);
@@ -142,24 +174,42 @@
             border-radius: 10px;
             padding: 15px;
             margin: 15px 0;
-            width: 80%;
+            width: 90%;
+            max-width: 600px;
             box-shadow: 0 0 15px rgba(114, 9, 183, 0.5);
             animation: fadeIn 1s ease-in-out 3s forwards;
             opacity: 0;
         }
+        .status-box h3 {
+            font-size: clamp(1.2em, 3vw, 1.5em);
+        }
+        .status-box ul {
+            padding-left: 20px;
+        }
+        .status-box li {
+            font-size: clamp(0.9em, 2.5vw, 1em);
+        }
         #search {
-            width: 80%;
+            width: 90%;
+            max-width: 600px;
             padding: 10px;
             margin: 15px 0;
             border: 1px solid #7209b7;
             border-radius: 5px;
             background: #2a2a3d;
             color: #e0e0e0;
+            font-size: clamp(0.9em, 2.5vw, 1em);
             animation: bounceIn 1s ease-in-out 3s forwards;
             opacity: 0;
         }
+        #search:focus {
+            outline: none;
+            box-shadow: 0 0 10px #ff00ff;
+            animation: glowBorder 1.5s infinite alternate;
+        }
         .accordion {
-            width: 80%;
+            width: 90%;
+            max-width: 600px;
             margin: 20px 0;
             animation: fadeIn 1s ease-in-out 3s forwards;
             opacity: 0;
@@ -170,6 +220,10 @@
             border-radius: 5px;
             margin-bottom: 10px;
             overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .accordion-item:hover {
+            transform: scale(1.02);
         }
         .accordion-header {
             color: #ff00ff;
@@ -180,24 +234,39 @@
             justify-content: space-between;
             align-items: center;
             transition: background 0.3s ease;
+            font-size: clamp(1em, 3vw, 1.2em);
         }
         .accordion-header:hover {
             background: #2a2a3d;
+        }
+        .accordion-header::before {
+            content: attr(data-emoji);
+            display: inline-block;
+            margin-right: 10px;
+            animation: spinEmoji 2s infinite linear;
         }
         .accordion-content {
             padding: 0 10px 10px;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.5s ease, padding 0.5s ease;
+            transition: max-height 0.5s ease, padding 0.5s ease, opacity 0.5s ease;
+            opacity: 0;
         }
         .accordion-content.active {
-            max-height: 500px;
+            max-height: 600px;
             padding: 0 10px 10px;
+            opacity: 1;
         }
         .command-item {
             padding: 5px 0;
             color: #b5179e;
             animation: slideInLeft 0.5s ease-in-out;
+            transition: transform 0.3s ease;
+            font-size: clamp(0.85em, 2.5vw, 1em);
+        }
+        .command-item:hover {
+            transform: translateX(10px);
+            color: #ff00ff;
         }
         .site-footer {
             text-align: center;
@@ -209,10 +278,18 @@
             animation: slideUp 1s ease-in-out 3s forwards;
             opacity: 0;
         }
+        .site-footer p {
+            font-size: clamp(0.8em, 2.5vw, 1em);
+        }
         .site-footer a {
             color: #ff00ff;
             text-decoration: none;
             margin: 0 10px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .site-footer a:hover {
+            color: #b5179e;
+            transform: scale(1.1);
         }
         .modal {
             display: none;
@@ -221,9 +298,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             justify-content: center;
             align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(3px);
+            animation: fadeInModal 0.5s ease-in-out;
         }
         .modal-content {
             background: #2f3136;
@@ -231,19 +311,21 @@
             border-radius: 10px;
             text-align: center;
             position: relative;
-            width: 300px;
+            width: 80%;
+            max-width: 300px;
             border: 2px solid #7209b7;
             box-shadow: 0 0 10px rgba(114, 9, 183, 0.5);
-            animation: modalPop 0.5s ease-in-out;
+            animation: modalPop 0.5s ease-in-out, glowBorder 2s infinite alternate;
         }
         .modal-content h3 {
             color: #ffffff;
             margin: 0 0 10px 0;
-            font-size: 1.2em;
+            font-size: clamp(1em, 3vw, 1.2em);
         }
         .modal-content p {
             color: #ffffff;
             margin: 10px 0;
+            font-size: clamp(0.9em, 2.5vw, 1em);
         }
         .modal-link {
             display: inline-block;
@@ -254,12 +336,14 @@
             text-decoration: none;
             font-weight: bold;
             margin-top: 10px;
-            transition: transform 0.3s ease, background 0.3s ease;
+            font-size: clamp(0.9em, 2.5vw, 1em);
+            transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
             animation: pulseButton 2s infinite;
         }
         .modal-link:hover {
             background: #b5179e;
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(5deg);
+            color: #ffffff;
         }
         .close {
             position: absolute;
@@ -268,137 +352,154 @@
             color: #ffffff;
             cursor: pointer;
             font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+        .close:hover {
+            transform: rotate(90deg);
         }
 
         /* Animaciones */
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh); opacity: 0.4; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         @keyframes glow {
-            from {
-                text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
-            }
-            to {
-                text-shadow: 0 0 20px #ff00ff, 0 0 30px #b5179e;
-            }
+            from { text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff; }
+            to { text-shadow: 0 0 20px #ff00ff, 0 0 30px #b5179e; }
         }
         @keyframes scaleIn {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
         @keyframes modalPop {
-            from {
-                transform: scale(0.5);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
+            from { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+            to { transform: scale(1) rotate(0deg); opacity: 1; }
         }
         @keyframes slideInLeft {
-            from {
-                transform: translateX(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
         @keyframes bounceIn {
-            0% {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.2);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
         }
         @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
         @keyframes pulseButton {
-            0% {
-                box-shadow: 0 0 5px #ff00ff;
-            }
-            50% {
-                box-shadow: 0 0 15px #ff00ff;
-            }
-            100% {
-                box-shadow: 0 0 5px #ff00ff;
-            }
+            0% { box-shadow: 0 0 5px #ff00ff; }
+            50% { box-shadow: 0 0 15px #ff00ff; }
+            100% { box-shadow: 0 0 5px #ff00ff; }
         }
         @keyframes fadeOutIntro {
-            0% {
-                opacity: 1;
-            }
-            80% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                display: none;
-            }
+            0% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; display: none; }
         }
         @keyframes pulseText {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1);
-            }
-            100% {
-                transform: scale(1);
-            }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        @keyframes rotateText {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(5deg); }
+            100% { transform: rotate(0deg); }
         }
         @keyframes slideIn {
-            from {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
         @keyframes glowBorder {
-            from {
-                box-shadow: 0 0 10px rgba(114, 9, 183, 0.5);
+            from { box-shadow: 0 0 10px rgba(114, 9, 183, 0.5); }
+            to { box-shadow: 0 0 20px rgba(114, 9, 183, 0.8); }
+        }
+        @keyframes spinEmoji {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Media Queries para móviles */
+        @media (max-width: 768px) {
+            body {
+                animation: none; /* Desactiva animación de fondo en móviles */
             }
-            to {
-                box-shadow: 0 0 20px rgba(114, 9, 183, 0.8);
+            .particles {
+                display: none; /* Desactiva partículas en móviles */
+            }
+            .intro h1 {
+                font-size: clamp(1.5em, 5vw, 2em);
+            }
+            .coming-soon {
+                width: 95%;
+                padding: 8px;
+            }
+            .header {
+                padding: 15px;
+            }
+            .premium-features {
+                width: 95%;
+                padding: 10px;
+            }
+            .feature-box {
+                flex-direction: column;
+                align-items: center;
+            }
+            .feature-item {
+                width: 80%;
+                max-width: 300px;
+            }
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .button {
+                width: 80%;
+                max-width: 300px;
+                text-align: center;
+            }
+            .status-box {
+                width: 95%;
+                padding: 10px;
+            }
+            #search {
+                width: 95%;
+            }
+            .accordion {
+                width: 95%;
+            }
+            .accordion-content.active {
+                max-height: 400px; /* Reduce altura máxima en móviles */
+            }
+            .modal-content {
+                width: 90%;
+                max-width: 280px;
+                padding: 15px;
+            }
+            .modal {
+                backdrop-filter: blur(2px); /* Reduce desenfoque en móviles */
             }
         }
     </style>
 </head>
 <body>
-    <!-- Introducción -->
+    <div class="particles" id="particles"></div>
+
     <div class="intro">
         <h1>ASTRA BOT</h1>
     </div>
@@ -409,7 +510,6 @@
         <p>Prefijo: <strong>Z!</strong></p>
     </div>
 
-    <!-- Cartel de comandos faltantes -->
     <div class="coming-soon">
         <p>¡Pronto se agregarán más comandos! 🚀</p>
     </div>
@@ -450,9 +550,8 @@
     <input type="text" id="search" placeholder="🔍 Buscar comandos..." class="search-bar">
 
     <div class="accordion">
-        <!-- Configuración -->
         <div class="accordion-item">
-            <div class="accordion-header" onclick="toggleAccordion('config')">⚙️ Configuración</div>
+            <div class="accordion-header" onclick="toggleAccordion('config')" data-emoji="⚙️">Configuración</div>
             <div id="config" class="accordion-content">
                 <ul class="command-list">
                     <li class="command-item"><strong>Z!addcolores</strong> - Añade roles de colores</li>
@@ -479,10 +578,8 @@
                 </ul>
             </div>
         </div>
-
-        <!-- Diversión -->
         <div class="accordion-item">
-            <div class="accordion-header" onclick="toggleAccordion('diversion')">🎉 Diversión</div>
+            <div class="accordion-header" onclick="toggleAccordion('diversion')" data-emoji="🎉">Diversión</div>
             <div id="diversion" class="accordion-content">
                 <ul class="command-list">
                     <li class="command-item"><strong>Z!8ball</strong> - Pregunta a la bola mágica</li>
@@ -513,10 +610,8 @@
                 </ul>
             </div>
         </div>
-
-        <!-- Información -->
         <div class="accordion-item">
-            <div class="accordion-header" onclick="toggleAccordion('informacion')">ℹ️ Información</div>
+            <div class="accordion-header" onclick="toggleAccordion('informacion')" data-emoji="ℹ️">Información</div>
             <div id="informacion" class="accordion-content">
                 <ul class="command-list">
                     <li class="command-item"><strong>Z!about</strong> - Información sobre el bot</li>
@@ -532,10 +627,8 @@
                 </ul>
             </div>
         </div>
-
-        <!-- Interacción -->
         <div class="accordion-item">
-            <div class="accordion-header" onclick="toggleAccordion('interaccion')">🤝 Interacción</div>
+            <div class="accordion-header" onclick="toggleAccordion('interaccion')" data-emoji="🤝">Interacción</div>
             <div id="interaccion" class="accordion-content">
                 <ul class="command-list">
                     <li class="command-item"><strong>Z!baka</strong> - Llama baka a alguien</li>
@@ -571,10 +664,8 @@
                 </ul>
             </div>
         </div>
-
-        <!-- Moderación -->
         <div class="accordion-item">
-            <div class="accordion-header" onclick="toggleAccordion('moderacion')">🛡️ Moderación</div>
+            <div class="accordion-header" onclick="toggleAccordion('moderacion')" data-emoji="🛡️">Moderación</div>
             <div id="moderacion" class="accordion-content">
                 <ul class="command-list">
                     <li class="command-item"><strong>Z!addrole</strong> - Añade un rol</li>
@@ -603,18 +694,14 @@
                 </ul>
             </div>
         </div>
-
-        <!-- NSFW -->
         <div class="accordion-item">
-            <div class="accordion-header" onclick="toggleAccordion('nsfw')">🔞 NSFW</div>
+            <div class="accordion-header" onclick="toggleAccordion('nsfw')" data-emoji="🔞">NSFW</div>
             <div id="nsfw" class="accordion-content">
                 <p class="nsfw-warning">* Los comandos de esta categoría solo están disponibles en canales marcados como NSFW *</p>
             </div>
         </div>
-
-        <!-- Reacción -->
         <div class="accordion-item">
-            <div class="accordion-header" onclick="toggleAccordion('reaccion')">😄 Reacción</div>
+            <div class="accordion-header" onclick="toggleAccordion('reaccion')" data-emoji="😄">Reacción</div>
             <div id="reaccion" class="accordion-content">
                 <ul class="command-list">
                     <li class="command-item"><strong>Z!angry</strong> - Muestra enojo</li>
@@ -646,10 +733,8 @@
                 </ul>
             </div>
         </div>
-
-        <!-- Utilidades -->
         <div class="accordion-item">
-            <div class="accordion-header" onclick="toggleAccordion('utilidades')">🛠️ Utilidades</div>
+            <div class="accordion-header" onclick="toggleAccordion('utilidades')" data-emoji="🛠️">Utilidades</div>
             <div id="utilidades" class="accordion-content">
                 <ul class="command-list">
                     <li class="command-item"><strong>Z!avatar</strong> - Muestra avatares</li>
@@ -680,6 +765,16 @@
     </footer>
 
     <script>
+        const particleContainer = document.getElementById('particles');
+        const particleCount = window.innerWidth <= 768 ? 20 : 50; // Menos partículas en móviles
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDelay = Math.random() * 10 + 's';
+            particleContainer.appendChild(particle);
+        }
+
         document.getElementById('search').addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
             document.querySelectorAll('.command-item').forEach(item => {
@@ -700,16 +795,18 @@
 
         function showSupportModal() {
             document.getElementById('supportModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
         }
 
         function hideSupportModal() {
             document.getElementById('supportModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
 
-        // Habilitar scroll después de la intro
         setTimeout(() => {
             document.body.style.overflow = 'auto';
         }, 3000);
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93ecc51d7e18c428',t:'MTc0NzA4MjgzMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93ecc51d7e18c428',t:'MTc0NzA4MjgzMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
 </html>
