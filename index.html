@@ -14,6 +14,44 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow: hidden; /* Evitar scroll durante la intro */
+        }
+        /* Introducción */
+        .intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #16213e, #0f3460);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeOutIntro 3s forwards;
+        }
+        .intro h1 {
+            color: #ff00ff;
+            font-size: 3em;
+            text-shadow: 0 0 15px #ff00ff;
+            animation: pulseText 1.5s infinite;
+        }
+        /* Cartel de comandos faltantes */
+        .coming-soon {
+            text-align: center;
+            padding: 10px;
+            background: #2c2f33;
+            width: 80%;
+            border: 2px solid #7209b7;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 0 15px rgba(114, 9, 183, 0.5);
+            animation: slideIn 1s ease-in-out, glowBorder 2s infinite alternate;
+        }
+        .coming-soon p {
+            color: #ff00ff;
+            margin: 0;
+            font-size: 1.2em;
         }
         .header {
             text-align: center;
@@ -21,16 +59,20 @@
             background: linear-gradient(90deg, #16213e, #0f3460);
             width: 100%;
             border-bottom: 2px solid #7209b7;
+            animation: fadeIn 1.5s ease-in-out 3s forwards;
+            opacity: 0;
         }
         .header h1 {
             color: #ff00ff;
             margin: 0;
             font-size: 2.5em;
             text-shadow: 0 0 10px #ff00ff;
+            animation: glow 2s infinite alternate;
         }
         .header h3 {
             color: #b5179e;
             margin: 5px 0;
+            animation: fadeIn 2s ease-in-out;
         }
         .premium-features {
             text-align: center;
@@ -41,12 +83,15 @@
             border-radius: 10px;
             margin: 15px 0;
             box-shadow: 0 0 15px rgba(114, 9, 183, 0.5);
+            animation: fadeIn 1s ease-in-out 3s forwards;
+            opacity: 0;
         }
         .premium-features h2 {
             color: #ff00ff;
             margin: 0;
             font-size: 2em;
             text-shadow: 0 0 10px #ff00ff;
+            animation: glow 2s infinite alternate;
         }
         .premium-features p {
             color: #b5179e;
@@ -62,6 +107,7 @@
             padding: 10px;
             border-radius: 5px;
             width: 200px;
+            animation: scaleIn 0.8s ease-in-out;
         }
         .feature-item span {
             color: #ffffff;
@@ -71,6 +117,8 @@
             justify-content: center;
             gap: 20px;
             margin: 15px 0;
+            animation: fadeIn 1s ease-in-out 3s forwards;
+            opacity: 0;
         }
         .button {
             padding: 10px 20px;
@@ -81,9 +129,12 @@
             cursor: pointer;
             text-decoration: none;
             font-weight: bold;
+            transition: transform 0.3s ease, background 0.3s ease;
+            animation: pulseButton 2s infinite;
         }
         .button:hover {
             background: #b5179e;
+            transform: scale(1.1);
         }
         .status-box {
             background: rgba(23, 23, 37, 0.9);
@@ -93,6 +144,8 @@
             margin: 15px 0;
             width: 80%;
             box-shadow: 0 0 15px rgba(114, 9, 183, 0.5);
+            animation: fadeIn 1s ease-in-out 3s forwards;
+            opacity: 0;
         }
         #search {
             width: 80%;
@@ -102,10 +155,14 @@
             border-radius: 5px;
             background: #2a2a3d;
             color: #e0e0e0;
+            animation: bounceIn 1s ease-in-out 3s forwards;
+            opacity: 0;
         }
         .accordion {
             width: 80%;
             margin: 20px 0;
+            animation: fadeIn 1s ease-in-out 3s forwards;
+            opacity: 0;
         }
         .accordion-item {
             background: rgba(23, 23, 37, 0.9);
@@ -122,20 +179,25 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: background 0.3s ease;
         }
         .accordion-header:hover {
             background: #2a2a3d;
         }
         .accordion-content {
             padding: 0 10px 10px;
-            display: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.5s ease;
         }
         .accordion-content.active {
-            display: block;
+            max-height: 500px;
+            padding: 0 10px 10px;
         }
         .command-item {
             padding: 5px 0;
             color: #b5179e;
+            animation: slideInLeft 0.5s ease-in-out;
         }
         .site-footer {
             text-align: center;
@@ -144,6 +206,8 @@
             width: 100%;
             border-top: 2px solid #7209b7;
             margin-top: auto;
+            animation: slideUp 1s ease-in-out 3s forwards;
+            opacity: 0;
         }
         .site-footer a {
             color: #ff00ff;
@@ -170,6 +234,7 @@
             width: 300px;
             border: 2px solid #7209b7;
             box-shadow: 0 0 10px rgba(114, 9, 183, 0.5);
+            animation: modalPop 0.5s ease-in-out;
         }
         .modal-content h3 {
             color: #ffffff;
@@ -189,9 +254,12 @@
             text-decoration: none;
             font-weight: bold;
             margin-top: 10px;
+            transition: transform 0.3s ease, background 0.3s ease;
+            animation: pulseButton 2s infinite;
         }
         .modal-link:hover {
             background: #b5179e;
+            transform: scale(1.1);
         }
         .close {
             position: absolute;
@@ -201,13 +269,149 @@
             cursor: pointer;
             font-size: 20px;
         }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+            }
+            to {
+                text-shadow: 0 0 20px #ff00ff, 0 0 30px #b5179e;
+            }
+        }
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        @keyframes modalPop {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        @keyframes pulseButton {
+            0% {
+                box-shadow: 0 0 5px #ff00ff;
+            }
+            50% {
+                box-shadow: 0 0 15px #ff00ff;
+            }
+            100% {
+                box-shadow: 0 0 5px #ff00ff;
+            }
+        }
+        @keyframes fadeOutIntro {
+            0% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                display: none;
+            }
+        }
+        @keyframes pulseText {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        @keyframes glowBorder {
+            from {
+                box-shadow: 0 0 10px rgba(114, 9, 183, 0.5);
+            }
+            to {
+                box-shadow: 0 0 20px rgba(114, 9, 183, 0.8);
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Introducción -->
+    <div class="intro">
+        <h1>ASTRA BOT</h1>
+    </div>
+
     <div class="header">
         <h1>ASTRA BOT</h1>
         <h3>Comandos Disponibles</h3>
         <p>Prefijo: <strong>Z!</strong></p>
+    </div>
+
+    <!-- Cartel de comandos faltantes -->
+    <div class="coming-soon">
+        <p>¡Pronto se agregarán más comandos! 🚀</p>
     </div>
 
     <div class="premium-features">
@@ -501,6 +705,11 @@
         function hideSupportModal() {
             document.getElementById('supportModal').style.display = 'none';
         }
+
+        // Habilitar scroll después de la intro
+        setTimeout(() => {
+            document.body.style.overflow = 'auto';
+        }, 3000);
     </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93ecc51d7e18c428',t:'MTc0NzA4MjgzMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
