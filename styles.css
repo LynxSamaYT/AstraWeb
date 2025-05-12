@@ -1,0 +1,32 @@
+/* ===== FOOTER ===== */
+.site-footer {
+    background: var(--card-bg);
+    padding: 20px;
+    margin-top: 40px;
+    border-top: 2px solid var(--main-color);
+    text-align: center;
+}
+
+.footer-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.site-footer p {
+    margin: 5px 0;
+    color: rgba(255,255,255,0.7);
+}
+
+.site-footer a {
+    color: var(--secondary-color);
+}
+
+/* ===== NSFW WARNING ===== */
+.nsfw-warning {
+    color: var(--accent-red);
+    font-style: italic;
+    text-align: center;
+    padding: 10px;
+    background: rgba(240, 71, 71, 0.1);
+    border-radius: 5px;
+}
