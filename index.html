@@ -480,48 +480,61 @@
             .server-counter {
                 right: 10px;
                 top: 10px;
-                padding: 8px;
+                padding: 5px;
+                box-shadow: none;
             }
             .intro h1 {
                 font-size: clamp(1.5em, 5vw, 2em);
             }
             .coming-soon {
                 width: 95%;
-                padding: 8px;
+                padding: 5px;
+                box-shadow: none;
+                border: 1px solid #7209b7;
             }
             .header {
-                padding: 15px;
+                padding: 10px;
             }
             .premium-features {
                 width: 95%;
-                padding: 10px;
+                padding: 8px;
+                box-shadow: none;
+                border: 1px solid #7209b7;
             }
             .feature-box {
                 flex-direction: column;
                 align-items: center;
+                gap: 10px;
             }
             .feature-item {
                 width: 80%;
                 max-width: 300px;
+                padding: 5px;
             }
             .buttons {
                 flex-direction: column;
                 align-items: center;
+                gap: 10px;
             }
             .button, .optimize-button {
                 width: 80%;
                 max-width: 300px;
                 text-align: center;
+                padding: 8px;
             }
             .status-box {
                 width: 95%;
-                padding: 10px;
+                padding: 8px;
+                box-shadow: none;
+                border: 1px solid #7209b7;
             }
             #search {
                 width: 95%;
+                padding: 8px;
             }
             .accordion {
                 width: 95%;
+                margin: 10px 0;
             }
             .accordion-content.active {
                 max-height: 400px;
@@ -529,10 +542,12 @@
             .modal-content {
                 width: 90%;
                 max-width: 280px;
-                padding: 15px;
+                padding: 10px;
+                box-shadow: none;
+                border: 1px solid #7209b7;
             }
             .modal {
-                backdrop-filter: blur(2px);
+                backdrop-filter: blur(1px);
             }
         }
 
@@ -544,36 +559,45 @@
             .server-counter {
                 right: 15px;
                 top: 15px;
+                padding: 8px;
             }
             .intro h1 {
                 font-size: clamp(1.8em, 5vw, 2.5em);
             }
             .coming-soon {
                 width: 90%;
+                padding: 8px;
             }
             .premium-features {
                 width: 90%;
+                padding: 10px;
             }
             .feature-box {
                 flex-direction: row;
+                gap: 12px;
             }
             .feature-item {
                 width: clamp(120px, 25vw, 180px);
             }
             .buttons {
                 flex-direction: row;
+                gap: 12px;
             }
             .button, .optimize-button {
                 width: auto;
+                padding: 10px;
             }
             .status-box {
                 width: 90%;
+                padding: 10px;
             }
             #search {
                 width: 90%;
+                padding: 10px;
             }
             .accordion {
                 width: 90%;
+                margin: 15px 0;
             }
         }
 
@@ -628,7 +652,7 @@
     <div class="buttons">
         <a href="https://discord.com/oauth2/authorize?client_id=1361094327509585970&permissions=8&integration_type=0&scope=bot+applications.commands" class="button">Invitar Bot</a>
         <button class="button" onclick="showSupportModal()">Soporte</button>
-        <button class="optimize-button" onclick="optimizeForDevice()">Optimizar para Dispositivo</button>
+        <button class="optimize-button" onclick="debouncedOptimize()">Optimizar para Dispositivo</button>
     </div>
 
     <div class="modal" id="supportModal">
@@ -1007,53 +1031,124 @@
             document.body.style.overflow = 'auto';
         }
 
+        // Debounce para evitar múltiples clics rápidos
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
         function optimizeForDevice() {
             const width = window.innerWidth;
-            const particlesJSInstance = window.pJSDom[0];
+            const particlesJSInstance = window.pJSDom && window.pJSDom[0];
 
             if (width <= 767) { // Móvil
+                // Desactivar partículas
                 document.getElementById('particles-js').style.display = 'none';
                 if (particlesJSInstance) particlesJSInstance.pJS.fn.vendors.destroypJS();
+
+                // Desactivar animaciones pesadas
+                document.body.style.animation = 'none';
+                document.querySelectorAll('.header h1, .premium-features h2, .button, .optimize-button, .premium-link, #search:focus').forEach(el => {
+                    el.style.animation = 'none';
+                });
+
+                // Reducir tamaño de fuentes y elementos
                 document.querySelectorAll('h1, h2, h3, p, .button, .optimize-button, .premium-link, .command-item, #search').forEach(el => {
-                    el.style.fontSize = 'clamp(0.8em, 2vw, 1em)';
+                    el.style.fontSize = 'clamp(0.7em, 1.8vw, 0.9em)';
                 });
                 document.querySelectorAll('.feature-item, .button, .optimize-button').forEach(el => {
                     el.style.width = '90%';
-                    el.style.maxWidth = '250px';
+                    el.style.maxWidth = '200px';
+                    el.style.padding = '5px';
                 });
+
+                // Ajustar diseño
                 document.querySelector('.buttons').style.flexDirection = 'column';
                 document.querySelector('.feature-box').style.flexDirection = 'column';
+                document.querySelectorAll('.accordion-item, .modal-content, .status-box, .coming-soon, .premium-features').forEach(el => {
+                    el.style.boxShadow = 'none';
+                    el.style.border = '1px solid #7209b7';
+                });
             } else if (width >= 1025) { // PC
+                // Reactivar partículas
                 document.getElementById('particles-js').style.display = 'block';
                 if (particlesJSInstance) particlesJSInstance.pJS.fn.vendors.destroypJS();
                 particlesJS('particles-js', particlesConfig);
+
+                // Restaurar animaciones
+                document.body.style.animation = '';
+                document.querySelectorAll('.header h1, .premium-features h2, .button, .optimize-button, .premium-link, #search:focus').forEach(el => {
+                    el.style.animation = '';
+                });
+
+                // Restaurar tamaños
                 document.querySelectorAll('h1, h2, h3, p, .button, .optimize-button, .premium-link, .command-item, #search').forEach(el => {
                     el.style.fontSize = '';
                 });
                 document.querySelectorAll('.feature-item, .button, .optimize-button').forEach(el => {
                     el.style.width = '';
                     el.style.maxWidth = '';
+                    el.style.padding = '';
                 });
+
+                // Restaurar diseño
                 document.querySelector('.buttons').style.flexDirection = 'row';
                 document.querySelector('.feature-box').style.flexDirection = 'row';
+                document.querySelectorAll('.accordion-item, .modal-content, .status-box, .coming-soon, .premium-features').forEach(el => {
+                    el.style.boxShadow = '';
+                    el.style.border = '';
+                });
             } else { // Tablet (768px - 1024px)
+                // Optimizar partículas
                 document.getElementById('particles-js').style.display = 'block';
                 if (particlesJSInstance) particlesJSInstance.pJS.fn.vendors.destroypJS();
                 particlesJS('particles-js', {
                     ...particlesConfig,
-                    particles: { ...particlesConfig.particles, number: { value: 30 } }
+                    particles: { 
+                        ...particlesConfig.particles, 
+                        number: { value: 20 },
+                        move: { ...particlesConfig.particles.move, speed: 0.5 }
+                    },
+                    interactivity: {
+                        ...particlesConfig.interactivity,
+                        events: {
+                            ...particlesConfig.interactivity.events,
+                            onhover: { enable: false },
+                            onclick: { enable: false }
+                        }
+                    }
                 });
+
+                // Simplificar animaciones
+                document.body.style.animation = 'gradientBackground 30s ease infinite';
+                document.querySelectorAll('.header h1, .premium-features h2').forEach(el => {
+                    el.style.animation = 'glow 3s infinite alternate';
+                });
+
+                // Ajustar tamaños
                 document.querySelectorAll('h1, h2, h3, p, .button, .optimize-button, .premium-link, .command-item, #search').forEach(el => {
                     el.style.fontSize = '';
                 });
                 document.querySelectorAll('.feature-item, .button, .optimize-button').forEach(el => {
-                    el.style.width = 'clamp(120px, 25vw, 180px)';
+                    el.style.width = 'clamp(100px, 20vw, 160px)';
                     el.style.maxWidth = '';
+                    el.style.padding = '8px';
                 });
+
+                // Ajustar diseño
                 document.querySelector('.buttons').style.flexDirection = 'row';
                 document.querySelector('.feature-box').style.flexDirection = 'row';
             }
         }
+
+        const debouncedOptimize = debounce(optimizeForDevice, 300);
 
         setTimeout(() => {
             document.body.style.overflow = 'auto';
