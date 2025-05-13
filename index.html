@@ -6,7 +6,7 @@
     <title>AstraBot - Comandos</title>
     <style>
         body {
-            background: linear-gradient(45deg, #1a1a2e, #0f3460, #16213e, #2a2a3d);
+            background: linear-gradient(45deg, #0a0a1f, #1e0b3d, #0a0a1f, #2a1b4d);
             background-size: 400%;
             color: #e0e0e0;
             font-family: Arial, sans-serif;
@@ -19,7 +19,7 @@
             overflow-x: hidden;
             animation: gradientBackground 15s ease infinite;
             position: relative;
-            -webkit-overflow-scrolling: touch; /* Mejora el scroll en iOS */
+            -webkit-overflow-scrolling: touch;
         }
         .particles {
             position: fixed;
@@ -32,13 +32,28 @@
         }
         .particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #ff00ff;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 105, 180, 0.7);
             border-radius: 50%;
-            opacity: 0.4;
-            animation: floatParticle 10s infinite linear;
+            opacity: 0.6;
+            animation: floatParticle 12s infinite ease-in-out;
             will-change: transform, opacity;
+        }
+        .server-counter {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            background: rgba(23, 23, 37, 0.9);
+            border: 1px solid #7209b7;
+            border-radius: 5px;
+            padding: 10px;
+            color: #ff00ff;
+            font-size: clamp(0.9em, 2.5vw, 1em);
+            box-shadow: 0 0 10px rgba(114, 9, 183, 0.5);
+            animation: fadeIn 1s ease-in-out 3s forwards;
+            opacity: 0;
+            z-index: 10;
         }
         .intro {
             position: fixed;
@@ -46,7 +61,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, #16213e, #0f3460);
+            background: linear-gradient(45deg, #0a0a1f, #1e0b3d);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -79,7 +94,7 @@
         .header {
             text-align: center;
             padding: 20px;
-            background: linear-gradient(90deg, #16213e, #0f3460);
+            background: linear-gradient(90deg, #0a0a1f, #1e0b3d);
             width: 100%;
             border-bottom: 2px solid #7209b7;
             animation: fadeIn 1.5s ease-in-out 3s forwards;
@@ -117,10 +132,23 @@
             font-size: clamp(1.5em, 4vw, 2em);
             text-shadow: 0 0 10px #ff00ff;
             animation: glow 2s infinite alternate;
+            cursor: pointer;
         }
         .premium-features p {
             color: #b5179e;
             font-size: clamp(0.9em, 2.5vw, 1em);
+        }
+        .premium-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, opacity 0.5s ease;
+            opacity: 0;
+            color: #e0e0e0;
+            font-size: clamp(0.85em, 2.5vw, 1em);
+        }
+        .premium-details.active {
+            max-height: 300px;
+            opacity: 1;
         }
         .feature-box {
             display: flex;
@@ -139,6 +167,24 @@
         .feature-item span {
             color: #ffffff;
             font-size: clamp(0.8em, 2.5vw, 1em);
+        }
+        .premium-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #ff00ff;
+            color: #1a1a2e;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: clamp(0.9em, 2.5vw, 1em);
+            transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+            animation: pulseButton 2s infinite;
+        }
+        .premium-link:hover {
+            background: #b5179e;
+            transform: scale(1.1) rotate(5deg);
+            color: #ffffff;
         }
         .buttons {
             display: flex;
@@ -161,7 +207,7 @@
             font-size: clamp(0.9em, 2.5vw, 1em);
             transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
             animation: pulseButton 2s infinite;
-            touch-action: manipulation; /* Mejora la interacción táctil */
+            touch-action: manipulation;
         }
         .button:hover {
             background: #b5179e;
@@ -271,7 +317,7 @@
         .site-footer {
             text-align: center;
             padding: 10px;
-            background: #16213e;
+            background: #0a0a1f;
             width: 100%;
             border-top: 2px solid #7209b7;
             margin-top: auto;
@@ -365,8 +411,9 @@
             100% { background-position: 0% 50%; }
         }
         @keyframes floatParticle {
-            0% { transform: translateY(100vh); opacity: 0.4; }
-            100% { transform: translateY(-100vh); opacity: 0; }
+            0% { transform: translateY(100vh) translateX(0); opacity: 0.6; }
+            50% { transform: translateY(50vh) translateX(10px); opacity: 0.8; }
+            100% { transform: translateY(-100vh) translateX(0); opacity: 0; }
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
@@ -437,10 +484,15 @@
         /* Media Queries para móviles */
         @media (max-width: 768px) {
             body {
-                animation: none; /* Desactiva animación de fondo en móviles */
+                animation: none;
             }
             .particles {
-                display: none; /* Desactiva partículas en móviles */
+                display: none;
+            }
+            .server-counter {
+                right: 10px;
+                top: 10px;
+                padding: 8px;
             }
             .intro h1 {
                 font-size: clamp(1.5em, 5vw, 2em);
@@ -484,7 +536,7 @@
                 width: 95%;
             }
             .accordion-content.active {
-                max-height: 400px; /* Reduce altura máxima en móviles */
+                max-height: 400px;
             }
             .modal-content {
                 width: 90%;
@@ -492,13 +544,17 @@
                 padding: 15px;
             }
             .modal {
-                backdrop-filter: blur(2px); /* Reduce desenfoque en móviles */
+                backdrop-filter: blur(2px);
             }
         }
     </style>
 </head>
 <body>
     <div class="particles" id="particles"></div>
+
+    <div class="server-counter">
+        🌐 Servidores: 1,234
+    </div>
 
     <div class="intro">
         <h1>ASTRA BOT</h1>
@@ -515,13 +571,22 @@
     </div>
 
     <div class="premium-features">
-        <h2>Premium Features</h2>
+        <h2 onclick="togglePremiumDetails()">Premium Features</h2>
         <p>Packed with cutting-edge technology for the ultimate bot experience</p>
+        <div class="premium-details" id="premiumDetails">
+            <ul>
+                <li>⚡ <strong>Faster Responses:</strong> Priority command execution.</li>
+                <li>🛡️ <strong>Enhanced Security:</strong> Advanced moderation tools.</li>
+                <li>🎮 <strong>Exclusive Features:</strong> Custom commands and Lua scripting.</li>
+                <li>🌟 <strong>Priority Support:</strong> 24/7 dedicated support team.</li>
+            </ul>
+        </div>
         <div class="feature-box">
             <div class="feature-item"><span>⚡ Lightning Fast Execution</span></div>
             <div class="feature-item"><span>🛡️ Advanced Protection</span></div>
             <div class="feature-item"><span>🎮 Full Lua 5.4 Support</span></div>
         </div>
+        <a href="/premium-benefits" class="premium-link">Ver todos los beneficios</a>
     </div>
 
     <div class="buttons">
@@ -766,12 +831,12 @@
 
     <script>
         const particleContainer = document.getElementById('particles');
-        const particleCount = window.innerWidth <= 768 ? 20 : 50; // Menos partículas en móviles
+        const particleCount = window.innerWidth <= 768 ? 20 : 50;
         for (let i = 0; i < particleCount; i++) {
             const particle = document.createElement('div');
             particle.classList.add('particle');
             particle.style.left = Math.random() * 100 + 'vw';
-            particle.style.animationDelay = Math.random() * 10 + 's';
+            particle.style.animationDelay = Math.random() * 12 + 's';
             particleContainer.appendChild(particle);
         }
 
@@ -793,6 +858,15 @@
             }
         }
 
+        function togglePremiumDetails() {
+            const details = document.getElementById('premiumDetails');
+            if (details.classList.contains('active')) {
+                details.classList.remove('active');
+            } else {
+                details.classList.add('active');
+            }
+        }
+
         function showSupportModal() {
             document.getElementById('supportModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
@@ -807,6 +881,5 @@
             document.body.style.overflow = 'auto';
         }, 3000);
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93ecc51d7e18c428',t:'MTc0NzA4MjgzMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
