@@ -185,7 +185,7 @@
             animation: fadeIn 1s ease-in-out 3s forwards;
             opacity: 0;
         }
-        .button {
+        .button, .optimize-button {
             padding: 10px 20px;
             background: #ff00ff;
             color: #1a1a2e;
@@ -199,7 +199,7 @@
             animation: pulseButton 2s infinite;
             touch-action: manipulation;
         }
-        .button:hover {
+        .button:hover, .optimize-button:hover {
             background: #b5179e;
             transform: scale(1.1) rotate(5deg);
             color: #ffffff;
@@ -475,7 +475,7 @@
         /* Media Queries para optimización */
         @media (max-width: 767px) {
             #particles-js {
-                display: none; /* Desactivado en móviles pequeños por rendimiento */
+                display: none;
             }
             .server-counter {
                 right: 10px;
@@ -508,7 +508,7 @@
                 flex-direction: column;
                 align-items: center;
             }
-            .button {
+            .button, .optimize-button {
                 width: 80%;
                 max-width: 300px;
                 text-align: center;
@@ -539,7 +539,7 @@
         /* Tablets y pantallas intermedias */
         @media (min-width: 768px) and (max-width: 1024px) {
             #particles-js {
-                display: block; /* Activado en tablets */
+                display: block;
             }
             .server-counter {
                 right: 15px;
@@ -563,7 +563,7 @@
             .buttons {
                 flex-direction: row;
             }
-            .button {
+            .button, .optimize-button {
                 width: auto;
             }
             .status-box {
@@ -628,6 +628,7 @@
     <div class="buttons">
         <a href="https://discord.com/oauth2/authorize?client_id=1361094327509585970&permissions=8&integration_type=0&scope=bot+applications.commands" class="button">Invitar Bot</a>
         <button class="button" onclick="showSupportModal()">Soporte</button>
+        <button class="optimize-button" onclick="optimizeForDevice()">Optimizar para Dispositivo</button>
     </div>
 
     <div class="modal" id="supportModal">
@@ -882,21 +883,18 @@
 
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script>
-        // Configuración dinámica según el tamaño de la pantalla
-        const isMobile = window.innerWidth <= 767;
-        const isTablet = window.innerWidth >= 768 && window.innerWidth <= 1024;
-
-        particlesJS('particles-js', {
+        // Configuración inicial de partículas
+        let particlesConfig = {
             "particles": {
                 "number": {
-                    "value": isTablet ? 30 : 40, // Menos partículas en tablets
+                    "value": 40,
                     "density": {
                         "enable": true,
-                        "value_area": 1200 // Más espaciado para mejor rendimiento
+                        "value_area": 1200
                     }
                 },
                 "color": {
-                    "value": "#ff69b4" // Rosa neón
+                    "value": "#ff69b4"
                 },
                 "shape": {
                     "type": "circle"
@@ -911,7 +909,7 @@
                     }
                 },
                 "size": {
-                    "value": isTablet ? 2 : 3, // Tamaño más pequeño en tablets
+                    "value": 3,
                     "random": true,
                     "anim": {
                         "enable": false
@@ -920,13 +918,13 @@
                 "line_linked": {
                     "enable": true,
                     "distance": 120,
-                    "color": "#7209b7", // Líneas púrpuras
+                    "color": "#7209b7",
                     "opacity": 0.3,
                     "width": 1
                 },
                 "move": {
                     "enable": true,
-                    "speed": 0.8, // Movimiento lento para efecto etéreo
+                    "speed": 0.8,
                     "direction": "top",
                     "random": true,
                     "straight": false,
@@ -938,12 +936,12 @@
                 "detect_on": "canvas",
                 "events": {
                     "onhover": {
-                        "enable": !isMobile, // Desactivar repulse en móviles
+                        "enable": true,
                         "mode": "repulse"
                     },
                     "onclick": {
                         "enable": true,
-                        "mode": "push" // Generar partículas al hacer clic
+                        "mode": "push"
                     },
                     "resize": true
                 },
@@ -953,12 +951,14 @@
                         "duration": 0.4
                     },
                     "push": {
-                        "particles_nb": isTablet ? 2 : 3 // Menos partículas por clic en tablets
+                        "particles_nb": 3
                     }
                 }
             },
             "retina_detect": true
-        });
+        };
+
+        particlesJS('particles-js', particlesConfig);
 
         document.getElementById('search').addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
@@ -1005,6 +1005,54 @@
         function hideBenefitsModal() {
             document.getElementById('benefitsModal').style.display = 'none';
             document.body.style.overflow = 'auto';
+        }
+
+        function optimizeForDevice() {
+            const width = window.innerWidth;
+            const particlesJSInstance = window.pJSDom[0];
+
+            if (width <= 767) { // Móvil
+                document.getElementById('particles-js').style.display = 'none';
+                if (particlesJSInstance) particlesJSInstance.pJS.fn.vendors.destroypJS();
+                document.querySelectorAll('h1, h2, h3, p, .button, .optimize-button, .premium-link, .command-item, #search').forEach(el => {
+                    el.style.fontSize = 'clamp(0.8em, 2vw, 1em)';
+                });
+                document.querySelectorAll('.feature-item, .button, .optimize-button').forEach(el => {
+                    el.style.width = '90%';
+                    el.style.maxWidth = '250px';
+                });
+                document.querySelector('.buttons').style.flexDirection = 'column';
+                document.querySelector('.feature-box').style.flexDirection = 'column';
+            } else if (width >= 1025) { // PC
+                document.getElementById('particles-js').style.display = 'block';
+                if (particlesJSInstance) particlesJSInstance.pJS.fn.vendors.destroypJS();
+                particlesJS('particles-js', particlesConfig);
+                document.querySelectorAll('h1, h2, h3, p, .button, .optimize-button, .premium-link, .command-item, #search').forEach(el => {
+                    el.style.fontSize = '';
+                });
+                document.querySelectorAll('.feature-item, .button, .optimize-button').forEach(el => {
+                    el.style.width = '';
+                    el.style.maxWidth = '';
+                });
+                document.querySelector('.buttons').style.flexDirection = 'row';
+                document.querySelector('.feature-box').style.flexDirection = 'row';
+            } else { // Tablet (768px - 1024px)
+                document.getElementById('particles-js').style.display = 'block';
+                if (particlesJSInstance) particlesJSInstance.pJS.fn.vendors.destroypJS();
+                particlesJS('particles-js', {
+                    ...particlesConfig,
+                    particles: { ...particlesConfig.particles, number: { value: 30 } }
+                });
+                document.querySelectorAll('h1, h2, h3, p, .button, .optimize-button, .premium-link, .command-item, #search').forEach(el => {
+                    el.style.fontSize = '';
+                });
+                document.querySelectorAll('.feature-item, .button, .optimize-button').forEach(el => {
+                    el.style.width = 'clamp(120px, 25vw, 180px)';
+                    el.style.maxWidth = '';
+                });
+                document.querySelector('.buttons').style.flexDirection = 'row';
+                document.querySelector('.feature-box').style.flexDirection = 'row';
+            }
         }
 
         setTimeout(() => {
