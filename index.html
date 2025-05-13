@@ -21,24 +21,13 @@
             position: relative;
             -webkit-overflow-scrolling: touch;
         }
-        .particles {
+        #particles-js {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
             z-index: -1;
-        }
-        .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: rgba(255, 105, 180, 0.7);
-            border-radius: 50%;
-            opacity: 0.6;
-            animation: floatParticle 12s infinite ease-in-out;
-            will-change: transform, opacity;
         }
         .server-counter {
             position: fixed;
@@ -180,6 +169,7 @@
             font-size: clamp(0.9em, 2.5vw, 1em);
             transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
             animation: pulseButton 2s infinite;
+            cursor: pointer;
         }
         .premium-link:hover {
             background: #b5179e;
@@ -410,11 +400,6 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        @keyframes floatParticle {
-            0% { transform: translateY(100vh) translateX(0); opacity: 0.6; }
-            50% { transform: translateY(50vh) translateX(10px); opacity: 0.8; }
-            100% { transform: translateY(-100vh) translateX(0); opacity: 0; }
-        }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -481,13 +466,10 @@
             to { opacity: 1; }
         }
 
-        /* Media Queries para móviles */
-        @media (max-width: 768px) {
-            body {
-                animation: none;
-            }
-            .particles {
-                display: none;
+        /* Media Queries para optimización */
+        @media (max-width: 767px) {
+            #particles-js {
+                display: none; /* Desactivado en móviles pequeños por rendimiento */
             }
             .server-counter {
                 right: 10px;
@@ -547,13 +529,61 @@
                 backdrop-filter: blur(2px);
             }
         }
+
+        /* Tablets y pantallas intermedias */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            #particles-js {
+                display: block; /* Activado en tablets */
+            }
+            .server-counter {
+                right: 15px;
+                top: 15px;
+            }
+            .intro h1 {
+                font-size: clamp(1.8em, 5vw, 2.5em);
+            }
+            .coming-soon {
+                width: 90%;
+            }
+            .premium-features {
+                width: 90%;
+            }
+            .feature-box {
+                flex-direction: row;
+            }
+            .feature-item {
+                width: clamp(120px, 25vw, 180px);
+            }
+            .buttons {
+                flex-direction: row;
+            }
+            .button {
+                width: auto;
+            }
+            .status-box {
+                width: 90%;
+            }
+            #search {
+                width: 90%;
+            }
+            .accordion {
+                width: 90%;
+            }
+        }
+
+        /* PCs y pantallas grandes */
+        @media (min-width: 1025px) {
+            #particles-js {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
+    <div id="particles-js"></div>
 
     <div class="server-counter">
-        🌐 Servidores: 2
+        🌐 Servidores: Cargando...
     </div>
 
     <div class="intro">
@@ -586,7 +616,7 @@
             <div class="feature-item"><span>🛡️ Advanced Protection</span></div>
             <div class="feature-item"><span>🎮 Full Lua 5.4 Support</span></div>
         </div>
-        <a href="/premium-benefits" class="premium-link">Ver todos los beneficios</a>
+        <button class="premium-link" onclick="showBenefitsModal()">Ver todos los beneficios</button>
     </div>
 
     <div class="buttons">
@@ -600,6 +630,21 @@
             <h3>Syrath Profile</h3>
             <p>Manda un MD al creador o únete al servidor de soporte:</p>
             <a href="https://discord.gg/RDpuDU5N" class="modal-link" target="_blank">Unirse al Servidor</a>
+        </div>
+    </div>
+
+    <div class="modal" id="benefitsModal">
+        <div class="modal-content">
+            <span class="close" onclick="hideBenefitsModal()">×</span>
+            <h3>Beneficios Premium</h3>
+            <p>Al suscribirte a AstraBot Premium, obtendrás:</p>
+            <ul>
+                <li>⚡ <strong>Mayor prioridad:</strong> Respuestas más rápidas en comandos.</li>
+                <li>🎨 <strong>Personalización:</strong> Crea comandos y mensajes personalizados.</li>
+                <li>🛠️ <strong>Herramientas avanzadas:</strong> Moderación y análisis exclusivos.</li>
+                <li>🌟 <strong>Soporte premium:</strong> Asistencia dedicada 24/7.</li>
+            </ul>
+            <a href="https://x.ai/grok" class="modal-link" target="_blank">Más detalles</a>
         </div>
     </div>
 
@@ -829,16 +874,85 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script>
-        const particleContainer = document.getElementById('particles');
-        const particleCount = window.innerWidth <= 768 ? 20 : 50;
-        for (let i = 0; i < particleCount; i++) {
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
-            particle.style.left = Math.random() * 100 + 'vw';
-            particle.style.animationDelay = Math.random() * 12 + 's';
-            particleContainer.appendChild(particle);
-        }
+        // Configuración dinámica según el tamaño de la pantalla
+        const isMobile = window.innerWidth <= 767;
+        const isTablet = window.innerWidth >= 768 && window.innerWidth <= 1024;
+
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": isTablet ? 30 : 40, // Menos partículas en tablets
+                    "density": {
+                        "enable": true,
+                        "value_area": 1200 // Más espaciado para mejor rendimiento
+                    }
+                },
+                "color": {
+                    "value": "#ff69b4" // Rosa neón
+                },
+                "shape": {
+                    "type": "circle"
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 0.5,
+                        "opacity_min": 0.1
+                    }
+                },
+                "size": {
+                    "value": isTablet ? 2 : 3, // Tamaño más pequeño en tablets
+                    "random": true,
+                    "anim": {
+                        "enable": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 120,
+                    "color": "#7209b7", // Líneas púrpuras
+                    "opacity": 0.3,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 0.8, // Movimiento lento para efecto etéreo
+                    "direction": "top",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": !isMobile, // Desactivar repulse en móviles
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push" // Generar partículas al hacer clic
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "repulse": {
+                        "distance": 100,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": isTablet ? 2 : 3 // Menos partículas por clic en tablets
+                    }
+                }
+            },
+            "retina_detect": true
+        });
 
         document.getElementById('search').addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
@@ -874,6 +988,16 @@
 
         function hideSupportModal() {
             document.getElementById('supportModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function showBenefitsModal() {
+            document.getElementById('benefitsModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideBenefitsModal() {
+            document.getElementById('benefitsModal').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
 
